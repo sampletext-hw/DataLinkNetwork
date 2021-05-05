@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace DataLinkNetwork
 {
-    public class HdlcFrame
+    public class Frame
     {
         public static readonly BitArray Flag = new(new[] {false, true, true, true, true, true, true, false});
 
@@ -15,24 +15,24 @@ namespace DataLinkNetwork
 
         public BitArray Checksum { get; set; }
 
-        public HdlcFrame(BitArray data, BitArray address, BitArray control)
+        public Frame(BitArray data, BitArray address, BitArray control)
         {
-            if (data.Length > Constants.MaxFrameDataSize)
+            if (data.Length > C.MaxFrameDataSize)
             {
                 throw new ArgumentException(
-                    $"Data length can't exceed {Constants.MaxFrameDataSize}, actual {data.Length}");
+                    $"Data length can't exceed {C.MaxFrameDataSize}, actual {data.Length}");
             }
 
-            if (address.Length > Constants.AddressSize)
+            if (address.Length > C.AddressSize)
             {
                 throw new ArgumentException(
-                    $"Address length can't exceed {Constants.AddressSize}, actual {address.Length}");
+                    $"Address length can't exceed {C.AddressSize}, actual {address.Length}");
             }
 
-            if (control.Length > Constants.ControlSize)
+            if (control.Length > C.ControlSize)
             {
                 throw new ArgumentException(
-                    $"Control length can't exceed {Constants.ControlSize}, actual {control.Length}");
+                    $"Control length can't exceed {C.ControlSize}, actual {control.Length}");
             }
 
             Data = data;
@@ -45,12 +45,12 @@ namespace DataLinkNetwork
             Checksum = new VerticalOddityChecksumBuilder().Build(Data);
 
             int frameSize =
-                Constants.FlagSize +
-                Constants.AddressSize +
-                Constants.ControlSize +
+                C.FlagSize +
+                C.AddressSize +
+                C.ControlSize +
                 Data.Length +
-                Constants.ChecksumSize +
-                Constants.FlagSize;
+                C.ChecksumSize +
+                C.FlagSize;
 
             BitArray frameArray = new BitArray(frameSize);
 
@@ -66,7 +66,7 @@ namespace DataLinkNetwork
             return frameArray;
         }
 
-        public static HdlcFrame Parse(BitArray rawBits)
+        public static Frame Parse(BitArray rawBits)
         {
             var startFlagPosition = rawBits.FindFlag();
             if (startFlagPosition == -1)
@@ -74,7 +74,7 @@ namespace DataLinkNetwork
                 throw new ArgumentException($"{nameof(rawBits)} doesn't contain start Flag");
             }
 
-            int minimumNextFlag = startFlagPosition + Constants.FlagSize;
+            int minimumNextFlag = rawBits.Length - C.FlagSize;
 
             var nextFlagPosition = rawBits.FindFlag(minimumNextFlag);
 
@@ -85,28 +85,18 @@ namespace DataLinkNetwork
 
             BitArrayReader reader = new BitArrayReader(rawBits, startFlagPosition);
 
-            var flagBits = reader.Read(Constants.FlagSize);
-            var addressBits = reader.Read(Constants.AddressSize);
-            var controlBits = reader.Read(Constants.ControlSize);
+            reader.Read(C.FlagSize);
+            var addressBits = reader.Read(C.AddressSize);
+            var controlBits = reader.Read(C.ControlSize);
             var currentReaderPosition = reader.Position;
 
-            reader.Adjust(nextFlagPosition - currentReaderPosition - Constants.ChecksumSize);
+            reader.Adjust(nextFlagPosition - currentReaderPosition - C.ChecksumSize);
             var checksumStartPosition = reader.Position;
-            var checksumBits = reader.Read(Constants.ChecksumSize);
-            reader.Adjust(-Constants.ChecksumSize - checksumStartPosition + currentReaderPosition);
+            var checksumBits = reader.Read(C.ChecksumSize);
+            reader.Adjust(-C.ChecksumSize - checksumStartPosition + currentReaderPosition);
             var dataBits = reader.Read(checksumStartPosition - currentReaderPosition);
-
-            var checksum = new VerticalOddityChecksumBuilder().Build(dataBits);
-            if (checksum.IsSameNoCopy(checksumBits, 0, 0, Constants.ChecksumSize))
-            {
-                Console.WriteLine("HdlcFrame checksum matched");
-            }
-            else
-            {
-                Console.WriteLine("HdlcFrame checksum mismatched");
-            }
-
-            return new HdlcFrame(dataBits, addressBits, controlBits) {Checksum = checksum};
+            
+            return new Frame(dataBits, addressBits, controlBits) {Checksum = checksumBits};
         }
 
         public override string ToString()

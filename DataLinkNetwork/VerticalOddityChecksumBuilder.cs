@@ -7,7 +7,7 @@ namespace DataLinkNetwork
     {
         public BitArray Build(BitArray data)
         {
-            BitArray result = new BitArray(Constants.ChecksumSize); // 2 bytes, one for rows and 1 for cols
+            BitArray result = new BitArray(C.ChecksumSize); // 2 bytes, one for rows and 1 for cols
 
             // Arrays for row sums and col sums
             int[] rowSums = new int[8];

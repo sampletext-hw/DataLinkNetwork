@@ -7,7 +7,7 @@ namespace DataLinkNetwork
     {
         static void Main(string[] args)
         {
-            Tests.Test3();
+            Tests.Test4();
         }
     }
 }
