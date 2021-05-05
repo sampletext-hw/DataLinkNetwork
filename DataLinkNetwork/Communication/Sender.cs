@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Threading;
+using DataLinkNetwork.Abstractions;
+using DataLinkNetwork.BitArrayRoutine;
 
-namespace DataLinkNetwork
+namespace DataLinkNetwork.Communication
 {
     public class Sender : ISender
     {

@@ -3,8 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using DataLinkNetwork.Abstractions;
+using DataLinkNetwork.BitArrayRoutine;
+using DataLinkNetwork.Checksum;
 
-namespace DataLinkNetwork
+namespace DataLinkNetwork.Communication
 {
     public class Receiver : IReceiver
     {

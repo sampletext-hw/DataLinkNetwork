@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Text;
 using System.Threading.Tasks;
+using DataLinkNetwork.Abstractions;
+using DataLinkNetwork.BitArrayRoutine;
+using DataLinkNetwork.Checksum;
+using DataLinkNetwork.Communication;
 
 namespace DataLinkNetwork
 {
@@ -63,7 +67,6 @@ namespace DataLinkNetwork
 
             Task.Run(() =>
             {
-                int a = 5;
                 sender.Send(
                     Encoding.UTF8.GetBytes(
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +

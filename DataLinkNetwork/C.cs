@@ -1,6 +1,6 @@
 ﻿namespace DataLinkNetwork
 {
-    public class C
+    public static class C
     {
         public const int ChecksumSize = 16;
         public const int FlagSize = 8;

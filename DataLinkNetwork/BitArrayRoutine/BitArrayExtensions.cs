@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace DataLinkNetwork
+namespace DataLinkNetwork.BitArrayRoutine
 {
     public static class BitArrayExtensions
     {
@@ -21,24 +20,6 @@ namespace DataLinkNetwork
             }
 
             return builder.ToString();
-        }
-
-        public static bool IsSame(this BitArray bitArray, BitArray compare)
-        {
-            if (bitArray.Length != compare.Length)
-            {
-                return false;
-            }
-
-            for (var i = 0; i < bitArray.Count; i++)
-            {
-                if (bitArray[i] != compare[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         public static bool IsSameNoCopy(this BitArray srcArray, BitArray cmpArray, int srcStartIndex, int cmpStartIndex, int length)
@@ -123,10 +104,8 @@ namespace DataLinkNetwork
 
                 return result;
             }
-            else
-            {
-                return data;
-            }
+
+            return data;
         }
         
         public static BitArray DeBitStaff(this BitArray data)
@@ -175,10 +154,8 @@ namespace DataLinkNetwork
 
                 return result;
             }
-            else
-            {
-                return data;
-            }
+
+            return data;
         }
         
         public static List<BitArray> Split(this BitArray array, int maxSize)

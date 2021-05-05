@@ -1,4 +1,4 @@
-﻿namespace DataLinkNetwork
+﻿namespace DataLinkNetwork.Abstractions
 {
     public interface ISender
     {

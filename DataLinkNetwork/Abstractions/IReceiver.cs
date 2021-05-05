@@ -1,4 +1,6 @@
-﻿namespace DataLinkNetwork
+﻿using DataLinkNetwork.Communication;
+
+namespace DataLinkNetwork.Abstractions
 {
     public interface IReceiver
     {

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using DataLinkNetwork.Abstractions;
 
-namespace DataLinkNetwork
+namespace DataLinkNetwork.Communication
 {
     public class MiddlewareBuffer
     {

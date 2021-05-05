@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace DataLinkNetwork
+namespace DataLinkNetwork.BitArrayRoutine
 {
     public class BitArrayReader
     {
@@ -23,7 +23,7 @@ namespace DataLinkNetwork
         {
             if (Position + size > Array.Length)
             {
-                throw new ArgumentException($"Try to read {size}, when only {Array.Length - Position} available");
+                throw new ArgumentException($"Attempt to read {size}, when only {Array.Length - Position} available");
             }
 
             BitArray result = new BitArray(size);

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using DataLinkNetwork.BitArrayRoutine;
+using DataLinkNetwork.Checksum;
 
 namespace DataLinkNetwork
 {
